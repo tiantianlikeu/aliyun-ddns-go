@@ -50,7 +50,7 @@ func UpdateDomainRecord(recordId, newIp string) {
 	fmt.Println(result)
 	if err == nil {
 		lastIp = newIp
-		fmt.Println("DDNS ip 修改成功~    新解析的IP为：", newIp)
+		fmt.Println(time.Now(), "DDNS ip 修改成功~    新解析的IP为：", newIp)
 	}
 
 }
@@ -59,11 +59,17 @@ func main() {
 	if Client == nil {
 		Client = CreateClient()
 	}
-	c := cron.New(cron.WithSeconds())
-	EntryID, err := c.AddFunc("*/2 * * * *", ddns)
+	c := cron.New()
+	EntryID, err := c.AddFunc("*/1 * * * *", ddns)
 	fmt.Println(time.Now(), EntryID, err)
 	c.Start()
-	select {}
+	t1 := time.NewTimer(time.Second * 10)
+	for {
+		select {
+		case <-t1.C:
+			t1.Reset(time.Second * 10)
+		}
+	}
 }
 
 func ddns() {
@@ -74,8 +80,10 @@ func ddns() {
 			UpdateDomainRecord(*recordId, newIp)
 		} else {
 			lastIp = *oldIp
-			fmt.Println("ip未变化，oldIp is: " + *oldIp + ", newIp is: " + newIp)
+			fmt.Println(time.Now(), "ip未变化，oldIp is: "+*oldIp+", newIp is: "+newIp)
 		}
+	} else {
+		fmt.Println(time.Now(), "ip未变化，lastIp is: "+lastIp+", newIp is: "+newIp)
 	}
 }
 
