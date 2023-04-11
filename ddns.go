@@ -63,13 +63,8 @@ func main() {
 	EntryID, err := c.AddFunc("*/1 * * * *", ddns)
 	fmt.Println(time.Now(), EntryID, err)
 	c.Start()
-	t1 := time.NewTimer(time.Second * 10)
-	for {
-		select {
-		case <-t1.C:
-			t1.Reset(time.Second * 10)
-		}
-	}
+
+	select {}
 }
 
 func ddns() {
