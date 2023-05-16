@@ -75,11 +75,12 @@ func ddns() {
 			UpdateDomainRecord(*recordId, newIp)
 		} else {
 			lastIp = *oldIp
-			fmt.Println(time.Now(), "ip未变化，oldIp is: "+*oldIp+", newIp is: "+newIp)
+			// fmt.Println(time.Now(), "ip未变化，oldIp is: "+*oldIp+", newIp is: "+newIp)
 		}
-	} else {
-		fmt.Println(time.Now(), "ip未变化，lastIp is: "+lastIp+", newIp is: "+newIp)
-	}
+	} 
+	// else {
+	// 	fmt.Println(time.Now(), "ip未变化，lastIp is: "+lastIp+", newIp is: "+newIp)
+	// }
 }
 
 func GetDnsRecordId() (recordId *string, oldIp *string) {
